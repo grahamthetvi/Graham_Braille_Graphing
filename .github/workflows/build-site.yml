@@ -1,13 +1,17 @@
-name: Build website
+name: Build and deploy site
 
 on:
   push:
   pull_request:
   workflow_dispatch:
 
+# Avoid cancelling an in-flight Pages deployment.
 concurrency:
-  group: build-site-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -31,11 +35,42 @@ jobs:
         run: npm ci
 
       - name: Build static export
+        env:
+          # Production Pages URL includes /repo-name/; PRs stay base-path-free like local dev.
+          GITHUB_PAGES: ${{ github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && 'true' || 'false' }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: npm run build
 
-      - name: Upload generated site
+      - name: Upload generated site (CI artifact)
         uses: actions/upload-artifact@v4
         with:
           name: website
           path: Graphing/out
           if-no-files-found: error
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download site
+        uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
