@@ -86,6 +86,7 @@ import {
 } from "./board/mountWorkbenchBoard";
 import { useStatsOverlay } from "./hooks/useStatsOverlay";
 import { useWorkbenchSheets } from "./hooks/useWorkbenchSheets";
+import { SonificationPanel } from "./SonificationPanel";
 
 // MathLive editor dynamic import
 const MathLiveEditor = dynamic(() => import("@/graphing/MathLiveEditor"), { ssr: false });
@@ -118,6 +119,7 @@ export default function PlotWorkbench() {
   } = useStatsOverlay();
 
   const [sketchEntries, setSketchEntries] = useState<SketchEntry[]>([]);
+  const [sonifyTargetId, setSonifyTargetId] = useState<string | null>(null);
   const [inlineLatexDraft, setInlineLatexDraft] = useState<string | undefined>(undefined);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [axisGuidesVisible, setAxisGuidesVisible] = useState(true);
@@ -2116,6 +2118,14 @@ export default function PlotWorkbench() {
           style={{ backgroundColor: boardFill }}
         />
 
+        <SonificationPanel
+          boardRef={jsxBoardRef}
+          sketchEntries={sketchEntries}
+          focusedSheetId={focusedSheetId}
+          sonifyTargetId={sonifyTargetId}
+          onSonifyTargetIdChange={setSonifyTargetId}
+        />
+
         {/* collapsed chat toggle button */}
         {!assistantOpen && (
           <div className="fixed right-2 top-2 z-50">
@@ -2218,6 +2228,9 @@ export default function PlotWorkbench() {
             <SheetTitle asChild>
               <h2 className="text-lg font-semibold">Formulas</h2>
             </SheetTitle>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Use the radio control to pick which visible curve drives graph sonification.
+            </p>
           </div>
 
           {/* undoStack list */}
@@ -2227,6 +2240,20 @@ export default function PlotWorkbench() {
             )}
             {sketchEntries.map((item) => (
               <div key={item.id} className="flex items-start gap-2">
+                <input
+                  type="radio"
+                  name="sonify-solo-curve"
+                  className="mt-1.5 size-3 shrink-0 accent-primary"
+                  checked={
+                    item.visible &&
+                    (sonifyTargetId === item.id ||
+                      (sonifyTargetId === null &&
+                        item.id === sketchEntries.find((e) => e.visible)?.id))
+                  }
+                  disabled={!item.visible}
+                  onChange={() => setSonifyTargetId(item.id)}
+                  aria-label={`Solo this curve for graph sonification: ${item.latex}`}
+                />
                 <span
                   className="inline-block w-3 h-3 rounded-full mt-1"
                   style={{ backgroundColor: item.color }}
