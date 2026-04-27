@@ -120,7 +120,7 @@ export function SonificationPanel({
   const syncProbePoint = useCallback(() => {
     const board = boardRef.current;
     const bb = readBbox();
-    if (!board || !bb) return;
+    if (!board || !bb || !board.renderer) return;
     const [left, top, right, bottom] = bb;
     const x = Math.max(left, Math.min(right, probeX));
     let y = 0;
@@ -385,7 +385,7 @@ export function SonificationPanel({
 
   return (
     <div
-      className="pointer-events-auto fixed bottom-4 left-4 z-40 w-[min(100%,22rem)] rounded-lg border bg-background/95 p-3 text-sm shadow-lg backdrop-blur"
+      className="pointer-events-auto fixed bottom-4 left-4 z-30 w-[min(100%,22rem)] rounded-lg border bg-background/95 p-3 text-sm shadow-lg backdrop-blur"
       role="group"
       aria-label="Graph sonification"
       aria-keyshortcuts="Space Play or pause graph sweep M Toggle value or slope mode ArrowLeft ArrowRight Move probe ArrowUp ArrowDown Volume"

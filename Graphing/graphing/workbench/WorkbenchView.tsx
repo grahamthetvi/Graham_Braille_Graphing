@@ -317,6 +317,7 @@ export default function PlotWorkbench() {
       strokeColor: "#2563eb",
       fillColor: "#3b82f6",
     });
+    jsxBoardRef.current.update();
   };
 
   const addLine = () => {
@@ -485,8 +486,8 @@ export default function PlotWorkbench() {
     } catch {
       // fallback: use math.parseLatex if available
       try {
-        // @ts-ignore
-        const node = (math as any).parseLatex ? (math as any).parseLatex(latex) : null;
+        const parseFn = (math as any)['parseLatex'];
+        const node = parseFn ? parseFn(latex) : null;
         if (node) {
           const compiled = node.compile();
           const fn = (x: number) => compiled.evaluate({ x }) as number;
