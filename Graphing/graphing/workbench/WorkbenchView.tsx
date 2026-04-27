@@ -2087,7 +2087,13 @@ export default function PlotWorkbench() {
 
   // ------- UI -------
   return (
-    <div className="relative min-h-screen" data-testid="plot-workbench">
+    <div className="relative min-h-screen pt-14" data-testid="plot-workbench">
+      {/* Top Navigation Bar */}
+      <div className="fixed top-0 left-0 right-0 h-14 bg-background/80 backdrop-blur border-b z-40 flex items-center px-4 shadow-sm pointer-events-auto">
+        <h1 className="text-xl font-bold ml-14 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+          Graham Braille Graphing
+        </h1>
+      </div>
       <WorkbenchSheetMenu
         sheetList={sheetList}
         focusedSheetId={focusedSheetId}

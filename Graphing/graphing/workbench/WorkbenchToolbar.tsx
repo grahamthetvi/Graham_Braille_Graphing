@@ -37,6 +37,7 @@ export function WorkbenchToolbar({
           data-testid={`workbench-tool-${t.id}`}
           selected={activeInstrument === t.id}
           onClick={() => onSelectTool(t)}
+          size="pill"
         >
           {t.icon}
         </DepthToggleButton>

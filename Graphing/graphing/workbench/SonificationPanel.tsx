@@ -396,6 +396,12 @@ export function SonificationPanel({
         {liveText}
       </div>
 
+      {!soloEntry && (
+        <div className="mb-2 text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
+          <strong>Note:</strong> Add a formula to the graph to hear audio.
+        </div>
+      )}
+
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <Button
           type="button"
