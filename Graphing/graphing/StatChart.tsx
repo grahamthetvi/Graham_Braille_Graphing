@@ -24,7 +24,7 @@ export default function StatChart({
   type,
   width = 400,
   height = 300,
-  title = "统计图表",
+  title = "Chart",
   onClose,
 }: StatChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

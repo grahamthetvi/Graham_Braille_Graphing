@@ -493,7 +493,7 @@ export default function PlotWorkbench() {
         }
         throw new Error();
       } catch (err) {
-        showHint("解析公式失败，请检查语法");
+        showHint("Could not parse the formula. Check the syntax.");
       }
     }
   };
@@ -573,7 +573,7 @@ export default function PlotWorkbench() {
     ellipseModeRef.current = true;
     const board = jsxBoardRef.current;
     const foci: any[] = [];
-    showHint("依次点击画板选择两个焦点位置");
+    showHint("Click the board twice to place the two foci");
 
     const clickHandler = (evt: PointerEvent) => {
       if (!ellipseModeRef.current) return;
@@ -613,7 +613,7 @@ export default function PlotWorkbench() {
           { strokeColor: "#06b6d4", strokeWidth: 2 }
         );
         board.update();
-        showHint("已绘制椭圆");
+        showHint("Ellipse drawn");
         // exit mode
         ellipseModeRef.current = false;
         board.off("down", clickHandler);
@@ -805,7 +805,7 @@ export default function PlotWorkbench() {
     });
     
     // Add chart title
-    const title = jsxBoardRef.current.create('text', [0, 4, '学科成绩柱状图'], {
+    const title = jsxBoardRef.current.create('text', [0, 4, 'Subject scores (bar chart)'], {
       fontSize: 16,
       anchorX: 'middle',
       anchorY: 'bottom',
@@ -814,7 +814,7 @@ export default function PlotWorkbench() {
     });
     
     // Add usage instructions
-    const instructions = jsxBoardRef.current.create('text', [0, 3.5, '拖动菱形手柄调整数值 | 双击手柄打开编辑器'], {
+    const instructions = jsxBoardRef.current.create('text', [0, 3.5, 'Drag the diamond handle to adjust values | Double-click handle to open editor'], {
       fontSize: 10,
       anchorX: 'middle',
       anchorY: 'bottom',
@@ -894,7 +894,7 @@ export default function PlotWorkbench() {
       id: nanoid(),
       data: sampleSubjectBarRows(),
       position: { x: 0, y: 0 },
-      title: "学科成绩柱状图"
+      title: "Subject scores (bar chart)"
     };
     setFloatingBarClusters(prev => [...prev, newChart]);
   };
@@ -905,7 +905,7 @@ export default function PlotWorkbench() {
       setColumnChartDraft({
         data: [...chart.data],
         elements: [],
-        chartId: chartId // 添加chartId来标识正在编辑的图表
+        chartId: chartId // identify draggable bar chart being edited
       });
     }
   };
@@ -928,7 +928,7 @@ export default function PlotWorkbench() {
       id: nanoid(),
       data: sampleGradePieSlices(),
       position: { x: 2, y: 2 },
-      title: "数据分布饼图"
+      title: "Grade distribution (pie chart)"
     };
     setFloatingPieClusters(prev => [...prev, newChart]);
   };
@@ -939,7 +939,7 @@ export default function PlotWorkbench() {
       setColumnChartDraft({
         data: [...chart.data],
         elements: [],
-        chartId: chartId // 使用相同的编辑器，但标识为饼图
+        chartId: chartId // same editor; used for pie chart path
       });
     }
   };
@@ -1175,7 +1175,7 @@ export default function PlotWorkbench() {
             const idStr = [objs[i].id, objs[j].id].sort().join("-");
             if (lastTangentRef.current !== idStr) {
               lastTangentRef.current = idStr;
-              showHint("已相切");
+              showHint("Tangent");
             }
             return;
           }
@@ -1597,7 +1597,7 @@ export default function PlotWorkbench() {
     
     const steps = [
       {
-        description: "第1步：绘制第一个顶点A",
+        description: "Step 1: Place vertex A",
         action: () => {
           jsxBoardRef.current!.create("point", [-2, -1], {
             name: "A",
@@ -1610,7 +1610,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第2步：绘制第二个顶点B",
+        description: "Step 2: Place vertex B",
         action: () => {
           jsxBoardRef.current!.create("point", [2, -1], {
             name: "B",
@@ -1623,7 +1623,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第3步：连接AB，形成底边",
+        description: "Step 3: Draw side AB (base)",
         action: () => {
           const pointA = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "A");
           const pointB = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "B");
@@ -1637,7 +1637,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第4步：绘制第三个顶点C",
+        description: "Step 4: Place vertex C",
         action: () => {
           jsxBoardRef.current!.create("point", [0, 2], {
             name: "C",
@@ -1650,7 +1650,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第5步：连接AC，形成左边",
+        description: "Step 5: Draw side AC",
         action: () => {
           const pointA = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "A");
           const pointC = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "C");
@@ -1664,7 +1664,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第6步：连接BC，完成三角形",
+        description: "Step 6: Draw side BC to complete the triangle",
         action: () => {
           const pointB = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "B");
           const pointC = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "C");
@@ -1678,7 +1678,7 @@ export default function PlotWorkbench() {
         }
       },
       {
-        description: "第7步：添加三角形填充色",
+        description: "Step 7: Add triangle fill",
         action: () => {
           const pointA = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "A");
           const pointB = jsxBoardRef.current!.objectsList.find((obj: any) => obj.name === "B");
@@ -1745,7 +1745,7 @@ export default function PlotWorkbench() {
       nextStep();
       
       if (stepwiseDemo.isPlaying) {
-        setTimeout(playNextStep, 1500); // 1.5秒间隔
+        setTimeout(playNextStep, 1500); // 1.5s between steps
       }
     };
     
@@ -2119,7 +2119,7 @@ export default function PlotWorkbench() {
         {/* collapsed chat toggle button */}
         {!assistantOpen && (
           <div className="fixed right-2 top-2 z-50">
-            <DepthToggleButton title="打开公式面板" onClick={() => setAssistantOpen(true)}>
+            <DepthToggleButton title="Open formula panel" onClick={() => setAssistantOpen(true)}>
               <span className="text-sm font-bold">←</span>
             </DepthToggleButton>
           </div>
@@ -2130,14 +2130,14 @@ export default function PlotWorkbench() {
           <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-background/90 backdrop-blur rounded-lg shadow-lg p-3 flex items-center gap-3">
             <div className="flex items-center gap-2 text-sm">
               <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="font-medium">动画播放中: {
-                animationType === 'sine' ? '正弦波动画' :
-                animationType === 'parabola' ? '抛物线动画' :
-                animationType === 'rotation' ? '旋转动画' :
-                animationType === 'translation' ? '平移动画' : ''
+              <span className="font-medium">Playing: {
+                animationType === 'sine' ? 'Sine wave' :
+                animationType === 'parabola' ? 'Parabola' :
+                animationType === 'rotation' ? 'Rotation' :
+                animationType === 'translation' ? 'Translation' : ''
               }</span>
             </div>
-            <DepthToggleButton title="停止动画" size="small" onClick={stopAnimation}>
+            <DepthToggleButton title="Stop animation" size="small" onClick={stopAnimation}>
               <Pause className="w-4 h-4" />
             </DepthToggleButton>
           </div>
@@ -2147,9 +2147,9 @@ export default function PlotWorkbench() {
         {stepwiseDemo && (
           <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-background/90 backdrop-blur rounded-lg shadow-lg p-4 min-w-[400px]">
             <div className="text-center mb-3">
-              <h3 className="font-medium text-sm mb-1">三角形构造演示</h3>
+              <h3 className="font-medium text-sm mb-1">Triangle construction demo</h3>
               <div className="text-xs text-muted-foreground">
-                步骤 {stepwiseDemo.currentStep + 1} / {stepwiseDemo.steps.length}
+                Step {stepwiseDemo.currentStep + 1} of {stepwiseDemo.steps.length}
               </div>
             </div>
             
@@ -2161,7 +2161,7 @@ export default function PlotWorkbench() {
             
             <div className="flex items-center justify-center gap-2">
               <DepthToggleButton 
-                title="上一步" 
+                title="Previous step" 
                 size="small" 
                 onClick={prevStep}
               >
@@ -2169,7 +2169,7 @@ export default function PlotWorkbench() {
               </DepthToggleButton>
               
               <DepthToggleButton 
-                title={stepwiseDemo.isPlaying ? "暂停播放" : "自动播放"} 
+                title={stepwiseDemo.isPlaying ? "Pause" : "Play automatically"} 
                 size="small" 
                 onClick={stepwiseDemo.isPlaying ? stopStepwise : playStepwise}
               >
@@ -2177,7 +2177,7 @@ export default function PlotWorkbench() {
               </DepthToggleButton>
               
               <DepthToggleButton 
-                title="下一步" 
+                title="Next step" 
                 size="small" 
                 onClick={nextStep}
               >
@@ -2185,7 +2185,7 @@ export default function PlotWorkbench() {
               </DepthToggleButton>
               
               <DepthToggleButton 
-                title="重置" 
+                title="Reset" 
                 size="small" 
                 onClick={resetStepwise}
               >
@@ -2193,7 +2193,7 @@ export default function PlotWorkbench() {
               </DepthToggleButton>
               
               <DepthToggleButton 
-                title="关闭演示" 
+                title="Close demo" 
                 size="small" 
                 onClick={() => setStepwiseDemo(null)}
               >
@@ -2209,21 +2209,21 @@ export default function PlotWorkbench() {
         <SheetContent side="right" className="bg-muted" data-testid="formula-assistant-panel">
           {/* Close button at top-right */}
           <div className="absolute right-2 top-2 z-10">
-            <DepthToggleButton title="关闭公式面板" size="small" onClick={() => setAssistantOpen(false)}>
+            <DepthToggleButton title="Close formula panel" size="small" onClick={() => setAssistantOpen(false)}>
               <span className="text-sm font-bold">→</span>
             </DepthToggleButton>
           </div>
           
           <div className="p-4 border-b">
             <SheetTitle asChild>
-              <h2 className="text-lg font-semibold">公式对话</h2>
+              <h2 className="text-lg font-semibold">Formulas</h2>
             </SheetTitle>
           </div>
 
           {/* undoStack list */}
           <div className="flex-1 overflow-y-auto p-4 space-y-2" id="plot-assistant-scroll">
             {sketchEntries.length === 0 && (
-              <p className="text-sm text-muted-foreground">暂无记录，输入公式后将显示在此</p>
+              <p className="text-sm text-muted-foreground">No formulas yet. Plotted curves will appear here.</p>
             )}
             {sketchEntries.map((item) => (
               <div key={item.id} className="flex items-start gap-2">
@@ -2238,14 +2238,14 @@ export default function PlotWorkbench() {
                   <DepthToggleButton
                     size="small"
                     onClick={() => toggleVisible(item.id)}
-                    title={item.visible ? "隐藏曲线" : "显示曲线"}
+                    title={item.visible ? "Hide curve" : "Show curve"}
                   >
                     <span className="text-xs">{item.visible ? "👁" : "🚫"}</span>
                   </DepthToggleButton>
                   <DepthToggleButton
                     size="small"
                     onClick={() => removeFormula(item.id)}
-                    title="删除"
+                    title="Remove"
                   >
                     <span className="text-xs">✖</span>
                   </DepthToggleButton>
@@ -2272,10 +2272,10 @@ export default function PlotWorkbench() {
       {rectEdit && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/20 backdrop-blur-sm">
           <div className="bg-background rounded-md shadow-lg p-4 w-72 space-y-4">
-            <h3 className="text-sm font-medium">编辑长方形尺寸</h3>
+            <h3 className="text-sm font-medium">Edit rectangle size</h3>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs w-12">宽度</span>
+                <span className="text-xs w-12">Width</span>
                 <input
                   type="number"
                   value={rectW}
@@ -2284,7 +2284,7 @@ export default function PlotWorkbench() {
                 />
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs w-12">高度</span>
+                <span className="text-xs w-12">Height</span>
                 <input
                   type="number"
                   value={rectH}
@@ -2294,7 +2294,7 @@ export default function PlotWorkbench() {
               </div>
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="secondary" size="sm" onClick={() => setRectEdit(null)}>取消</Button>
+              <Button variant="secondary" size="sm" onClick={() => setRectEdit(null)}>Cancel</Button>
               <Button size="sm" onClick={() => {
                 const wNum = parseFloat(rectW);
                 const hNum = parseFloat(rectH);
@@ -2307,7 +2307,7 @@ export default function PlotWorkbench() {
                 p4.moveTo([x0, y0 - hNum], 0);
                 jsxBoardRef.current.update();
                 setRectEdit(null);
-              }}>应用</Button>
+              }}>Apply</Button>
             </div>
           </div>
         </div>
@@ -2317,7 +2317,7 @@ export default function PlotWorkbench() {
       {objEdit && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/20 backdrop-blur-sm">
           <div className="bg-background rounded-md shadow-lg p-4 w-80 space-y-4">
-            <h3 className="text-sm font-medium">编辑 {objEdit.type}</h3>
+            <h3 className="text-sm font-medium">Edit {objEdit.type}</h3>
             <div className="flex flex-col gap-3 text-sm">
               {objEdit.type === "point" && (
                 <>
@@ -2327,9 +2327,9 @@ export default function PlotWorkbench() {
               )}
               {objEdit.type === "circle" && (
                 <>
-                  <LabelInput label="中心 X" value={String(objEdit.fields.cx ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,cx:Number(v)}}))}/>
-                  <LabelInput label="中心 Y" value={String(objEdit.fields.cy ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,cy:Number(v)}}))}/>
-                  <LabelInput label="半径" value={String(objEdit.fields.r ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,r:Number(v)}}))}/>
+                  <LabelInput label="Center X" value={String(objEdit.fields.cx ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,cx:Number(v)}}))}/>
+                  <LabelInput label="Center Y" value={String(objEdit.fields.cy ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,cy:Number(v)}}))}/>
+                  <LabelInput label="Radius" value={String(objEdit.fields.r ?? "")} onChange={(v)=>setObjEdit(p=>({...p!, fields:{...p!.fields,r:Number(v)}}))}/>
                 </>
               )}
               {objEdit.type === "line" && (
@@ -2342,7 +2342,7 @@ export default function PlotWorkbench() {
               )}
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="secondary" size="sm" onClick={()=>setObjEdit(null)}>取消</Button>
+              <Button variant="secondary" size="sm" onClick={()=>setObjEdit(null)}>Cancel</Button>
               <Button size="sm" onClick={()=>{
                 const {obj,type,fields}=objEdit;
                 if(type==="point"){
@@ -2359,7 +2359,7 @@ export default function PlotWorkbench() {
                 }
                 jsxBoardRef.current.update();
                 setObjEdit(null);
-              }}>应用</Button>
+              }}>Apply</Button>
             </div>
           </div>
         </div>
@@ -2466,9 +2466,9 @@ export default function PlotWorkbench() {
             width={500}
             height={400}
             title={
-              statsViewKind === 'bar' ? '学科成绩柱状图' :
-              statsViewKind === 'pie' ? '成绩等级分布饼图' :
-              statsViewKind === 'scatter' ? '数据散点图' : '统计图表'
+              statsViewKind === 'bar' ? 'Subject scores (bar chart)' :
+              statsViewKind === 'pie' ? 'Grade distribution (pie chart)' :
+              statsViewKind === 'scatter' ? 'Scatter plot' : 'Chart'
             }
             onClose={() => setStatsOverlayOpen(false)}
           />

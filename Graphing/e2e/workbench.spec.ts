@@ -5,11 +5,11 @@ test.describe("plot workbench", () => {
     await page.goto("/");
     await expect(page.getByTestId("plot-workbench")).toBeVisible({ timeout: 60_000 });
 
-    await page.getByTitle("打开公式面板").click();
+    await page.getByTitle("Open formula panel").click();
     await expect(page.getByTestId("formula-assistant-panel")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "公式对话" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Formulas" })).toBeVisible();
 
-    await page.getByTitle("关闭公式面板").click();
+    await page.getByTitle("Close formula panel").click();
     await expect(page.getByTestId("formula-assistant-panel")).toBeHidden();
   });
 
@@ -17,7 +17,7 @@ test.describe("plot workbench", () => {
     await page.goto("/");
     await expect(page.getByTestId("plot-workbench")).toBeVisible({ timeout: 60_000 });
 
-    await page.getByTitle("菜单").click();
-    await expect(page.getByText("新建图纸")).toBeVisible();
+    await page.getByTitle("Menu").click();
+    await expect(page.getByText("New sheet")).toBeVisible();
   });
 });

@@ -25,7 +25,7 @@ export function EditorModalFrame({
   children,
   onClose,
   onApply,
-  applyLabel = "应用",
+  applyLabel = "Apply",
   showApply = true,
 }: EditorModalFrameProps) {
   if (!open) return null;
@@ -38,7 +38,7 @@ export function EditorModalFrame({
         <div className="flex flex-col gap-3 text-sm">{children}</div>
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="secondary" size="sm" onClick={onClose}>
-            取消
+            Cancel
           </Button>
           {showApply && onApply ? (
             <Button size="sm" onClick={onApply}>

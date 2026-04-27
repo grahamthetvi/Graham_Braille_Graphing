@@ -8,7 +8,7 @@ import {
 describe("sampleDatasets", () => {
   it("returns five subject bars", () => {
     expect(sampleSubjectBarRows()).toHaveLength(5);
-    expect(sampleSubjectBarRows()[0]).toMatchObject({ label: "数学", value: 85 });
+    expect(sampleSubjectBarRows()[0]).toMatchObject({ label: "Math", value: 85 });
   });
 
   it("returns four pie slices", () => {

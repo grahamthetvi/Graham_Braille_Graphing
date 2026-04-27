@@ -62,8 +62,8 @@ export default function BarChartEditor({
               <BarChart3 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold">柱状图数据编辑器</h3>
-              <p className="text-blue-100 text-sm">编辑图表数据和标签</p>
+              <h3 className="text-lg font-semibold">Bar chart data editor</h3>
+              <p className="text-blue-100 text-sm">Edit chart values and labels</p>
             </div>
           </div>
           <button
@@ -89,19 +89,19 @@ export default function BarChartEditor({
                   <div className="flex-1 space-y-3">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        标签名称
+                        Label
                       </label>
                       <input
                         type="text"
                         value={item.label}
                         onChange={(e) => updateItem(index, 'label', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="输入标签名称"
+                        placeholder="Enter label"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        数值 (0-100)
+                        Value (0–100)
                       </label>
                       <div className="relative">
                         <input
@@ -109,7 +109,7 @@ export default function BarChartEditor({
                           value={item.value}
                           onChange={(e) => updateItem(index, 'value', Number(e.target.value))}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                          placeholder="输入数值"
+                          placeholder="Enter value"
                           min="0"
                           max="100"
                         />
@@ -125,7 +125,7 @@ export default function BarChartEditor({
                     onClick={() => removeItem(index)}
                     disabled={data.length <= 1}
                     className="flex-shrink-0 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-1"
-                    title="删除项目"
+                    title="Remove row"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -148,14 +148,14 @@ export default function BarChartEditor({
             className="w-full mt-4 p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-blue-400 hover:text-blue-500 hover:bg-blue-50/50 transition-all duration-200 flex items-center justify-center gap-2"
           >
             <Plus className="w-5 h-5" />
-            <span className="font-medium">添加新项目</span>
+            <span className="font-medium">Add row</span>
           </button>
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 bg-gray-50 border-t flex justify-between items-center">
           <div className="text-sm text-gray-500">
-            共 {data.length} 个数据项
+            {data.length} row{data.length === 1 ? "" : "s"}
           </div>
           <div className="flex gap-3">
             <Button 
@@ -163,13 +163,13 @@ export default function BarChartEditor({
               onClick={onClose}
               className="px-6"
             >
-              取消
+              Cancel
             </Button>
             <Button 
               onClick={handleApply}
               className="px-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
             >
-              应用更改
+              Apply changes
             </Button>
           </div>
         </div>

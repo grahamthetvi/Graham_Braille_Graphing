@@ -1,11 +1,11 @@
 import type { ChartDatum } from "./chartTypes";
 
 export const DEFAULT_BAR_CHART_ROWS: ChartDatum[] = [
-  { label: "数学", value: 85 },
-  { label: "物理", value: 78 },
-  { label: "化学", value: 92 },
-  { label: "生物", value: 88 },
-  { label: "英语", value: 76 },
+  { label: "Math", value: 85 },
+  { label: "Physics", value: 78 },
+  { label: "Chemistry", value: 92 },
+  { label: "Biology", value: 88 },
+  { label: "English", value: 76 },
 ];
 
 export function clampPercent(value: number): number {
@@ -29,7 +29,7 @@ export function updateBarRow(
 }
 
 export function addBarRow(rows: ChartDatum[]): ChartDatum[] {
-  return [...rows, { label: `项目${rows.length + 1}`, value: 50 }];
+  return [...rows, { label: `Item ${rows.length + 1}`, value: 50 }];
 }
 
 export function removeBarRow(rows: ChartDatum[], index: number): ChartDatum[] {

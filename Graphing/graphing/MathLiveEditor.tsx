@@ -96,7 +96,7 @@ export default function MathLiveEditor({ onSubmit, value }: MathLiveEditorProps)
         }}
         className="w-full text-sm rounded-md bg-primary text-primary-foreground py-1.5 hover:bg-primary/90"
       >
-        绘制公式曲线
+        Plot formula curve
       </button>
     </div>
   );

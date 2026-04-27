@@ -27,7 +27,7 @@ export default function DraggableBarChart({
   onEdit,
   onRemove,
   onAnimate,
-  title = "柱状图"
+  title = "Bar chart"
 }: DraggableBarChartProps) {
   const chartRef = useRef<any>(null);
   const elementsRef = useRef<any[]>([]);
@@ -39,7 +39,7 @@ export default function DraggableBarChart({
   useEffect(() => {
     if (!board || !data.length) return;
 
-    // 清理之前的元素
+    // Remove previous elements
     elementsRef.current.forEach(element => {
       if (element && typeof element.remove === 'function') {
         try {
@@ -57,11 +57,11 @@ export default function DraggableBarChart({
     const chartWidth = data.length * barSpacing;
     const chartHeight = 4;
 
-    // 创建图表元素
+    // Build chart elements
     const createChart = (baseX: number, baseY: number) => {
       const elements: any[] = [];
 
-      // 创建卡片背景
+      // Card background
       const cardBackground = board.create('polygon', [
         [baseX - chartWidth/2 - 0.5, baseY - 1],
         [baseX + chartWidth/2 + 0.5, baseY - 1], 
@@ -80,7 +80,7 @@ export default function DraggableBarChart({
       });
       elements.push(cardBackground);
 
-      // 创建标题
+      // Title
       const titleText = board.create('text', [
         baseX, 
         baseY + chartHeight + 0.5, 
@@ -95,7 +95,7 @@ export default function DraggableBarChart({
       });
       elements.push(titleText);
 
-      // 创建柱状图元素
+      // Bar chart geometry
       const bars: any[] = [];
       const labels: any[] = [];
       const values: any[] = [];
@@ -104,7 +104,7 @@ export default function DraggableBarChart({
         const barX = barCenterX(baseX, i, data.length, barSpacing);
         const barHeight = barHeightForValue(d.value, maxValue, DEFAULT_BAR_SCALE_HEIGHT);
 
-        // 创建柱子
+        // Bar polygon
         const bar = board.create('polygon', [
           [barX - barWidth/2, baseY],
           [barX + barWidth/2, baseY],
@@ -120,7 +120,7 @@ export default function DraggableBarChart({
           fixed: true
         });
 
-        // 创建标签
+        // Category label
         const label = board.create('text', [
           barX, 
           baseY - 0.3, 
@@ -133,7 +133,7 @@ export default function DraggableBarChart({
           fixed: true
         });
 
-        // 创建数值
+        // Value label
         const valueText = board.create('text', [
           barX, 
           baseY + barHeight + 0.1, 
@@ -152,7 +152,7 @@ export default function DraggableBarChart({
         elements.push(bar, label, valueText);
       });
 
-      // 创建拖动手柄
+      // Drag handle
       const dragHandle = board.create('point', [
         baseX, 
         baseY + chartHeight + 0.8
@@ -163,9 +163,9 @@ export default function DraggableBarChart({
         strokeColor: '#059669',
         fillOpacity: 0.8,
         strokeWidth: 2,
-        fixed: true, // 重要：设为fixed，禁用JSXGraph的内置拖动
+        fixed: true, // fixed: use custom drag, not JSXGraph point drag
         snapToGrid: false,
-        name: '📌拖动',
+        name: "📌 Drag",
         showInfobox: false,
         highlight: true,
         highlightFillColor: '#34d399',
@@ -173,7 +173,7 @@ export default function DraggableBarChart({
       });
       elements.push(dragHandle);
 
-      // 创建控制按钮
+      // Control buttons
       const editButton = board.create('point', [
         baseX + chartWidth/2 + 0.2, 
         baseY + chartHeight + 0.5
@@ -235,19 +235,19 @@ export default function DraggableBarChart({
       };
     };
 
-    // 初始创建图表
+    // Initial chart
     const chart = createChart(position.x, position.y);
     elementsRef.current = chart.elements;
 
-    // 保存当前图表的引用
+    // Current chart ref (mutated on drag)
     let currentChart = chart;
 
-    // 动画功能
+    // Bar grow animation
     const animateBars = () => {
-      if (isAnimatingRef.current) return; // 防止重复动画
+      if (isAnimatingRef.current) return; // avoid overlapping animations
       
       isAnimatingRef.current = true;
-      const animationDuration = 3000; // 3秒动画
+      const animationDuration = 3000; // 3s animation
       const startTime = Date.now();
       
       const originalHeights = data.map((d) => barHeightForValue(d.value, maxValue, DEFAULT_BAR_SCALE_HEIGHT));
@@ -266,14 +266,14 @@ export default function DraggableBarChart({
             const currentHeight = targetHeight * easeOut;
             const barX = barCenterX(position.x, i, data.length, barSpacing);
             
-            // 更新柱子顶部两个顶点
+            // Update top two bar vertices
             const barVertices = bar.vertices;
             if (barVertices && barVertices.length >= 4) {
               barVertices[2].moveTo([barX + barWidth/2, position.y + currentHeight], 0);
               barVertices[3].moveTo([barX - barWidth/2, position.y + currentHeight], 0);
             }
             
-            // 更新数值文本位置
+            // Reposition value label
             currentChart.values[i].moveTo([barX, position.y + currentHeight + 0.1], 0);
           });
         } catch (error) {
@@ -293,16 +293,16 @@ export default function DraggableBarChart({
       animate();
     };
 
-    // 更新图表位置的函数 - 直接移动元素而不是重建
+    // Move chart by translating elements (no rebuild)
     const updateChartPosition = (newX: number, newY: number) => {
       const deltaX = newX - position.x;
       const deltaY = newY - position.y;
 
-      // 暂停画板更新
+      // Suspend board updates
       board.suspendUpdate();
       
       try {
-        // 移动背景
+        // Move background
         const bgVertices = currentChart.cardBackground.vertices;
         if (bgVertices && bgVertices.length >= 4) {
           bgVertices[0].moveTo([bgVertices[0].X() + deltaX, bgVertices[0].Y() + deltaY], 0);
@@ -311,18 +311,18 @@ export default function DraggableBarChart({
           bgVertices[3].moveTo([bgVertices[3].X() + deltaX, bgVertices[3].Y() + deltaY], 0);
         }
 
-        // 移动标题
+        // Move title
         currentChart.titleText.moveTo([currentChart.titleText.X() + deltaX, currentChart.titleText.Y() + deltaY], 0);
 
-        // 移动拖动手柄
+        // Move drag handle
         currentChart.dragHandle.moveTo([currentChart.dragHandle.X() + deltaX, currentChart.dragHandle.Y() + deltaY], 0);
 
-        // 移动按钮
+        // Move toolbar points
         currentChart.editButton.moveTo([currentChart.editButton.X() + deltaX, currentChart.editButton.Y() + deltaY], 0);
         currentChart.animateButton.moveTo([currentChart.animateButton.X() + deltaX, currentChart.animateButton.Y() + deltaY], 0);
         currentChart.removeButton.moveTo([currentChart.removeButton.X() + deltaX, currentChart.removeButton.Y() + deltaY], 0);
 
-        // 移动柱状图元素
+        // Move bars
         currentChart.bars.forEach(bar => {
           const barVertices = bar.vertices;
           if (barVertices && barVertices.length >= 4) {
@@ -333,7 +333,7 @@ export default function DraggableBarChart({
           }
         });
 
-        // 移动标签和数值
+        // Move labels and values
         currentChart.labels.forEach(label => {
           label.moveTo([label.X() + deltaX, label.Y() + deltaY], 0);
         });
@@ -342,7 +342,7 @@ export default function DraggableBarChart({
           value.moveTo([value.X() + deltaX, value.Y() + deltaY], 0);
         });
 
-        // 更新位置引用
+        // Update logical position
         position.x = newX;
         position.y = newY;
 
@@ -350,13 +350,13 @@ export default function DraggableBarChart({
         console.warn('Error moving elements:', error);
       }
 
-      // 恢复画板更新
+      // Resume board updates
       board.unsuspendUpdate();
     };
 
-    // 设置事件监听
+    // Wire events
     const setupEvents = (chartElements: any) => {
-      // 按钮点击事件
+      // Button clicks
       chartElements.editButton.on('up', function() {
         if (onEdit) onEdit();
       });
@@ -370,7 +370,7 @@ export default function DraggableBarChart({
         if (onRemove) onRemove();
       });
 
-      // 拖动手柄的鼠标事件
+      // Drag handle pointer down
       chartElements.dragHandle.on('down', function(e: any) {
         isDraggingRef.current = true;
         const coords = board.getUsrCoordsOfMouse(e);
@@ -379,7 +379,7 @@ export default function DraggableBarChart({
       });
     };
 
-    // 全局鼠标事件监听
+    // Global pointer listeners on board container
     const handleMouseMove = (e: MouseEvent) => {
       if (!isDraggingRef.current) return;
 
@@ -388,7 +388,7 @@ export default function DraggableBarChart({
         const deltaX = coords[0] - lastMousePosRef.current.x;
         const deltaY = coords[1] - lastMousePosRef.current.y;
 
-        // 只有当移动距离足够大时才更新，增加阈值减少重建频率
+        // Threshold reduces tiny jitter updates
         if (Math.abs(deltaX) > 0.2 || Math.abs(deltaY) > 0.2) {
           const newX = position.x + deltaX;
           const newY = position.y + deltaY;
@@ -405,10 +405,10 @@ export default function DraggableBarChart({
       isDraggingRef.current = false;
     };
 
-    // 绑定初始事件
+    // Initial event binding
     setupEvents(chart);
 
-    // 添加全局事件监听器
+    // Attach listeners to board DOM
     const boardElement = board.containerObj;
     if (boardElement) {
       boardElement.addEventListener('mousemove', handleMouseMove);
@@ -439,26 +439,26 @@ export default function DraggableBarChart({
     board.update();
 
     return () => {
-      // 停止动画
+      // Stop animation
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
       }
       isAnimatingRef.current = false;
       
-      // 清理事件监听器
+      // Remove listeners
       if (boardElement) {
         boardElement.removeEventListener('mousemove', handleMouseMove);
         boardElement.removeEventListener('mouseup', handleMouseUp);
         boardElement.removeEventListener('mouseleave', handleMouseUp);
       }
       
-      // 清理图表元素
+      // Remove chart from board
       if (chartRef.current) {
         chartRef.current.remove();
       }
     };
   }, [board, data, position.x, position.y]);
 
-  return null; // 这个组件不渲染DOM，只操作JSXGraph
+  return null; // Imperative JSXGraph only; no React DOM
 } 

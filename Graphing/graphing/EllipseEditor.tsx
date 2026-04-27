@@ -26,7 +26,7 @@ export default function EllipseEditor({
   return (
     <EditorModalFrame
       open={open}
-      title="绘制椭圆 x²/a² + y²/b² = 1"
+      title="Draw ellipse x²/a² + y²/b² = 1"
       onClose={onClose}
       onApply={() => {
         const aNum = parseFloat(a);
@@ -35,8 +35,8 @@ export default function EllipseEditor({
         onApply(aNum, bNum);
       }}
     >
-      <LabelInput label="a (长轴)" value={a} onChange={setA} />
-      <LabelInput label="b (短轴)" value={b} onChange={setB} />
+      <LabelInput label="a (semi-major)" value={a} onChange={setA} />
+      <LabelInput label="b (semi-minor)" value={b} onChange={setB} />
     </EditorModalFrame>
   );
 }

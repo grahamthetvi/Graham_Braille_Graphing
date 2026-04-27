@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-const DEFAULT_MATH_PLACEHOLDER = "在此输入公式，使用 \frac, \sqrt 等 LaTeX";
+const DEFAULT_MATH_PLACEHOLDER =
+  "Enter a formula here using LaTeX (e.g. \\frac{a}{b}, \\sqrt{x}).";
 
 type MathEditorProps = {
   onSubmit: (latex: string) => void;
@@ -86,7 +87,7 @@ export default function MathEditor({ onSubmit, placeholder }: MathEditorProps) {
         onClick={submitFromEditor}
         className="w-full text-sm rounded-md bg-primary text-primary-foreground py-1.5 hover:bg-primary/90"
       >
-        绘制公式曲线
+        Plot formula curve
       </button>
     </div>
   );

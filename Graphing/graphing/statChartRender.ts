@@ -143,11 +143,11 @@ export function renderScatterPlot(
   ctx.fillStyle = "#333";
   ctx.font = "14px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("X 轴", width / 2, height - 10);
+  ctx.fillText("X axis", width / 2, height - 10);
 
   ctx.save();
   ctx.translate(15, height / 2);
   ctx.rotate(-Math.PI / 2);
-  ctx.fillText("Y 轴", 0, 0);
+  ctx.fillText("Y axis", 0, 0);
   ctx.restore();
 }

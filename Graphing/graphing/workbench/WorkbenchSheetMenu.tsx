@@ -32,7 +32,7 @@ export function WorkbenchSheetMenu({
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <div className="fixed left-2 top-2 z-50">
-          <DepthToggleButton title="菜单" data-testid="workbench-sheet-menu" onClick={() => {}}>
+          <DepthToggleButton title="Menu" data-testid="workbench-sheet-menu" onClick={() => {}}>
             <Menu className="w-5 h-5" />
           </DepthToggleButton>
         </div>
@@ -47,7 +47,7 @@ export function WorkbenchSheetMenu({
           onSelect={onCreateBoard}
           className="flex items-center gap-2 rounded px-2 py-1.5 focus:bg-accent cursor-pointer"
         >
-          <Plus className="w-4 h-4 text-primary" /> 新建图纸
+          <Plus className="w-4 h-4 text-primary" /> New sheet
         </DropdownMenu.Item>
         <DropdownMenu.Separator className="my-1 h-px bg-muted" />
         {sheetList.map((b) => (
@@ -66,7 +66,7 @@ export function WorkbenchSheetMenu({
           className="flex items-center gap-2 rounded px-2 py-1.5 focus:bg-accent cursor-pointer"
         >
           {axisGuidesVisible ? <EyeOff className="w-4 h-4 text-primary" /> : <Eye className="w-4 h-4 text-primary" />}
-          {axisGuidesVisible ? "隐藏坐标轴/网格" : "显示坐标轴/网格"}
+          {axisGuidesVisible ? "Hide axes and grid" : "Show axes and grid"}
         </DropdownMenu.Item>
         <DropdownMenu.Separator className="my-1 h-px bg-muted" />
         <div className="px-3 py-2">
@@ -79,7 +79,7 @@ export function WorkbenchSheetMenu({
                 onClick={() => onBoardFillChange(col)}
                 className={`h-6 w-6 rounded border ${boardFill === col ? "ring-2 ring-primary" : "ring-1 ring-muted"}`}
                 style={{ backgroundColor: col }}
-                title="背景色"
+                title="Background color"
               />
             ))}
           </div>

@@ -26,7 +26,7 @@ export default function SineEditor({
   return (
     <EditorModalFrame
       open={open}
-      title="编辑正弦曲线 y = A·sin(kx)"
+      title="Edit sine curve y = A·sin(kx)"
       onClose={onClose}
       onApply={() => {
         const A = parseFloat(amp);
@@ -35,8 +35,8 @@ export default function SineEditor({
         onApply(A, k);
       }}
     >
-      <LabelInput label="A (振幅)" value={amp} onChange={setAmp} />
-      <LabelInput label="k (频率)" value={freq} onChange={setFreq} />
+      <LabelInput label="A (amplitude)" value={amp} onChange={setAmp} />
+      <LabelInput label="k (angular frequency)" value={freq} onChange={setFreq} />
     </EditorModalFrame>
   );
 }

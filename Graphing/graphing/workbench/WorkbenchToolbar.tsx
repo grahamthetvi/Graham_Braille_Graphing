@@ -46,7 +46,7 @@ export function WorkbenchToolbar({
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <div>
-              <DepthToggleButton title="更多工具" data-testid="workbench-tool-more" onClick={() => {}}>
+              <DepthToggleButton title="More tools" data-testid="workbench-tool-more" onClick={() => {}}>
                 <MoreHorizontal className="w-5 h-5" />
               </DepthToggleButton>
             </div>

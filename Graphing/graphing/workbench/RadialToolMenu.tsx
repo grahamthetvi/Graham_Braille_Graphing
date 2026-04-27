@@ -50,7 +50,7 @@ export function RadialToolMenu({
                 e.stopPropagation();
                 onClearBoard();
               }}
-              title="清除画布"
+              title="Clear canvas"
             >
               <Eraser className="w-4 h-4 text-white" />
             </div>
@@ -63,7 +63,7 @@ export function RadialToolMenu({
                 e.stopPropagation();
                 onUndo();
               }}
-              title="撤销 (上一步)"
+              title="Undo"
             >
               <Undo2 className="w-4 h-4 text-white" />
             </div>
@@ -76,7 +76,7 @@ export function RadialToolMenu({
                 e.stopPropagation();
                 onRedo();
               }}
-              title="重做 (下一步)"
+              title="Redo"
             >
               <Redo2 className="w-4 h-4 text-white" />
             </div>

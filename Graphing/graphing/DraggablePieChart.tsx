@@ -21,7 +21,7 @@ export default function DraggablePieChart({
   onEdit,
   onRemove,
   onAnimate,
-  title = "饼图"
+  title = "Pie chart"
 }: DraggablePieChartProps) {
   const chartRef = useRef<any>(null);
   const elementsRef = useRef<any[]>([]);
@@ -33,7 +33,7 @@ export default function DraggablePieChart({
   useEffect(() => {
     if (!board || !data.length) return;
 
-    // 清理之前的元素
+    // Remove previous elements
     elementsRef.current.forEach(element => {
       if (element && typeof element.remove === 'function') {
         try {
@@ -51,11 +51,11 @@ export default function DraggablePieChart({
     const radius = 2;
     const chartSize = 5;
 
-    // 创建图表
+    // Build chart
     const createChart = (baseX: number, baseY: number) => {
       const elements: any[] = [];
 
-      // 背景卡片
+      // Card background
       const cardBackground = board.create('polygon', [
         [baseX - chartSize/2 - 0.5, baseY - chartSize/2 - 0.5],
         [baseX + chartSize/2 + 0.5, baseY - chartSize/2 - 0.5], 
@@ -71,7 +71,7 @@ export default function DraggablePieChart({
       });
       elements.push(cardBackground);
 
-      // 标题
+      // Title
       const titleText = board.create('text', [baseX, baseY + chartSize/2 + 1, title], {
         fontSize: 14,
         fontWeight: 'bold',
@@ -82,7 +82,7 @@ export default function DraggablePieChart({
       });
       elements.push(titleText);
 
-      // 创建饼图扇形
+      // Pie sectors
       const sectors: any[] = [];
       const labels: any[] = [];
       const values: any[] = [];
@@ -137,19 +137,19 @@ export default function DraggablePieChart({
         elements.push(sector, label, valueText);
       });
 
-      // 拖动手柄
+      // Drag handle
       const dragHandle = board.create('point', [baseX, baseY + chartSize/2 + 0.8], {
         size: 6,
         face: 'diamond',
         fillColor: '#10b981',
         strokeColor: '#059669',
         fixed: true,
-        name: '📌拖动',
+        name: "📌 Drag",
         highlight: true
       });
       elements.push(dragHandle);
 
-      // 控制按钮
+      // Control buttons
       const editButton = board.create('point', [baseX + chartSize/2 + 0.2, baseY + chartSize/2 + 0.5], {
         size: 3,
         face: 'circle',
@@ -190,7 +190,7 @@ export default function DraggablePieChart({
     elementsRef.current = chart.elements;
     let currentChart = chart;
 
-    // 动画功能 - 扇形从0度开始增长
+    // Grow sectors from 0° animation
     const animatePieChart = () => {
       if (isAnimatingRef.current) return;
       
@@ -206,16 +206,16 @@ export default function DraggablePieChart({
         board.suspendUpdate();
         
         try {
-          // 删除现有的扇形、标签和百分比文本
+          // Remove current sectors, labels, percent text
           [...currentChart.sectors, ...currentChart.labels, ...currentChart.values].forEach(element => {
             try {
               board.removeObject(element);
             } catch (e) {
-              // 忽略已删除的元素
+              // Ignore already-removed objects
             }
           });
           
-          // 重新创建增长中的扇形
+          // Recreate sectors at current animation progress
           const newSectors: any[] = [];
           const newLabels: any[] = [];
           const newValues: any[] = [];
@@ -224,11 +224,11 @@ export default function DraggablePieChart({
           data.forEach((d, i) => {
             const percentage = (d.value / totalValue) * 100;
             const finalAngle = (d.value / totalValue) * 2 * Math.PI;
-            const animatedAngle = finalAngle * easeOut; // 当前扇形的动画角度
+            const animatedAngle = finalAngle * easeOut; // this slice's animated span
             const startAngle = currentAngle;
             const endAngle = currentAngle + animatedAngle;
             
-            // 只有当动画角度大于0时才创建扇形
+            // Only create sector once span is positive
             if (animatedAngle > 0.01) {
               const sector = board.create('sector', [
                 [position.x, position.y],
@@ -243,7 +243,7 @@ export default function DraggablePieChart({
               });
               newSectors.push(sector);
 
-              // 标签和百分比只在扇形足够大时显示
+              // Labels when slice is large enough
               if (animatedAngle > finalAngle * 0.3) {
                 const midAngle = (startAngle + endAngle) / 2;
                 const labelRadius = radius + 0.8;
@@ -259,7 +259,7 @@ export default function DraggablePieChart({
                 });
                 newLabels.push(label);
 
-                // 百分比文本
+                // Percent label
                 const percentRadius = radius * 0.7;
                 const percentX = position.x + percentRadius * Math.cos(midAngle);
                 const percentY = position.y + percentRadius * Math.sin(midAngle);
@@ -276,16 +276,16 @@ export default function DraggablePieChart({
               }
             }
 
-            // 移动到下一个扇形的起始位置（使用最终角度）
+            // Advance start angle for next slice (full angle)
             currentAngle += finalAngle;
           });
           
-          // 更新当前图表的引用
+          // Refresh chart refs
           currentChart.sectors = newSectors;
           currentChart.labels = newLabels;
           currentChart.values = newValues;
           
-          // 更新元素引用
+          // Refresh element list
           const keptElements = currentChart.elements.filter(el => 
             ![...currentChart.sectors, ...currentChart.labels, ...currentChart.values].includes(el)
           );
@@ -308,9 +308,9 @@ export default function DraggablePieChart({
       animate();
     };
 
-    // 更新位置 - 重新创建图表以避免变形
+    // Reposition by rebuilding chart (avoids skew)
     const updateChartPosition = (newX: number, newY: number) => {
-      // 清除当前图表元素
+      // Tear down current chart
       currentChart.elements.forEach(element => {
         try {
           board.removeObject(element);
@@ -319,22 +319,22 @@ export default function DraggablePieChart({
         }
       });
 
-      // 更新位置
+      // Apply new origin
       position.x = newX;
       position.y = newY;
 
-      // 重新创建图表
+      // Rebuild chart at new position
       const newChart = createChart(newX, newY);
       currentChart = newChart;
       elementsRef.current = newChart.elements;
 
-      // 重新绑定事件
+      // Re-wire events
       setupEvents(newChart);
 
       board.update();
     };
 
-    // 事件设置
+    // Event wiring
     const setupEvents = (chartElements: any) => {
       chartElements.editButton.on('up', () => onEdit && onEdit());
       chartElements.animateButton.on('up', () => {
